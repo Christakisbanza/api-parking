@@ -22,4 +22,5 @@ public class UserController {
         User newUser = userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
+
 }

@@ -29,22 +29,22 @@ public class User implements Serializable {
     @Column(name = "role", nullable = false, length = 25)
     private Role role;
 
-    @Column(name = "userName", nullable = false, unique = true, length = 100)
+    @Column(name = "name", nullable = false, unique = true, length = 100)
     private String userName;
 
-    @Column(name = "passWord", nullable = false, length = 200)
+    @Column(name = "password", nullable = false, length = 200)
     private String passWord;
 
     @Column(name = "dateCreation")
     private LocalDate dateCreation;
 
-    @Column(name = "dateUpDate")
+    @Column(name = "dateUpdate")
     private LocalDate dateUpDate;
 
     @Column(name = "createdBy")
     private String createdBy;
 
-    @Column(name = "upDatedBy")
+    @Column(name = "updatedBy")
     private String upDatedBy;
 
     @Override
