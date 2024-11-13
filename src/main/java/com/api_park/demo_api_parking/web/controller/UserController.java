@@ -40,4 +40,10 @@ public class UserController {
         return ResponseEntity.ok().body(updateUserPassword);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id){
+        userService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
