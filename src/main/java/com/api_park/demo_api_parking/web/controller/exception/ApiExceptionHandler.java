@@ -1,5 +1,6 @@
 package com.api_park.demo_api_parking.web.controller.exception;
 
+import com.api_park.demo_api_parking.exception.EntityNotFoundException;
 import com.api_park.demo_api_parking.exception.UserNameUniqueViolationException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,18 @@ public class ApiExceptionHandler {
                 .body(new ErrorMessage(request, HttpStatus.CONFLICT, ex.getMessage()));
 
     }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorMessage> entityNotFound(RuntimeException ex, HttpServletRequest request){
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.NOT_FOUND, ex.getMessage()));
+
+    }
+
 
 
 

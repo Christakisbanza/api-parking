@@ -1,6 +1,7 @@
 package com.api_park.demo_api_parking.services;
 
 import com.api_park.demo_api_parking.entity.User;
+import com.api_park.demo_api_parking.exception.EntityNotFoundException;
 import com.api_park.demo_api_parking.exception.UserNameUniqueViolationException;
 import com.api_park.demo_api_parking.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public User findById(Long id){
         return userRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Usuario não encontrado")
+                () -> new EntityNotFoundException(String.format("Usuario id : %s não encontrado", id))
         );
     }
 
