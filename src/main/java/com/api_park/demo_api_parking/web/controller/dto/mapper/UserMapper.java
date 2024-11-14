@@ -6,6 +6,8 @@ import com.api_park.demo_api_parking.web.controller.dto.UserResponseDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 
+import java.util.List;
+
 
 public class UserMapper {
 
@@ -15,6 +17,13 @@ public class UserMapper {
 
     public static UserResponseDto toUserDto(User user){
         return new ModelMapper().map(user, UserResponseDto.class);
+    }
+
+    public static List<UserResponseDto> toUserDto(List<User> users){
+        ModelMapper mapper = new ModelMapper();
+        return users.stream()
+                .map(user -> mapper.map(user, UserResponseDto.class))
+                .toList();
     }
 
 }

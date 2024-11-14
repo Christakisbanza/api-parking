@@ -3,6 +3,7 @@ package com.api_park.demo_api_parking.web.controller;
 import com.api_park.demo_api_parking.entity.User;
 import com.api_park.demo_api_parking.services.UserService;
 import com.api_park.demo_api_parking.web.controller.dto.UserCreateDto;
+import com.api_park.demo_api_parking.web.controller.dto.UserPassWordDto;
 import com.api_park.demo_api_parking.web.controller.dto.UserResponseDto;
 import com.api_park.demo_api_parking.web.controller.dto.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -26,21 +27,21 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll(){
+    public ResponseEntity<List<UserResponseDto>> findAll(){
         List<User> users = userService.findAll();
-        return ResponseEntity.ok().body(users);
+        return ResponseEntity.ok().body(UserMapper.toUserDto(users));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id){
+    public ResponseEntity<UserResponseDto> findById(@PathVariable Long id){
         User user = userService.findById(id);
-        return ResponseEntity.ok().body(user);
+        return ResponseEntity.ok().body(UserMapper.toUserDto(user));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<User> upDatePassWord(@PathVariable Long id, @RequestBody User user){
-        User updateUserPassword = userService.upDatePassWord(id, user.getPassWord());
-        return ResponseEntity.ok().body(updateUserPassword);
+    public ResponseEntity<Void> upDatePassWord(@PathVariable Long id, @RequestBody UserPassWordDto userPassWordDto){
+        User updateUserPassword = userService.upDatePassWord(id, userPassWordDto.getCurrentPassWord(), userPassWordDto.getNewPassWord(), userPassWordDto.getConfirmNewPassWord());
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")

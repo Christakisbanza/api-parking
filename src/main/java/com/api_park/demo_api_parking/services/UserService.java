@@ -33,9 +33,18 @@ public class UserService {
     }
 
     @Transactional
-    public User upDatePassWord(Long id, String password){
+    public User upDatePassWord(Long id, String currentPassWord, String newPassWord, String confirmNewPassWord){
+        if(!newPassWord.equals(confirmNewPassWord)){
+            throw new RuntimeException("Confirmação da senha inválida");
+        }
+
         User user = findById(id);
-        user.setPassWord(password);
+
+        if(!user.getPassWord().equals(currentPassWord)){
+            throw new RuntimeException("Senha Inválida");
+        }
+
+        user.setPassWord(newPassWord);
         return user;
     }
 
@@ -44,4 +53,5 @@ public class UserService {
         findById(id);
         userRepository.deleteById(id);
     }
+
 }
