@@ -15,9 +15,16 @@ import java.util.Objects;
 @Table(name = "users")
 public class User implements Serializable {
 
+    @Getter
     public enum Role{
-        ROLE_ADMIN,
-        ROLE_CLIENT;
+        ROLE_ADMIN("Admin"),
+        ROLE_CLIENT("Client");
+
+        private final String role;
+
+        Role(String role){
+            this.role = role;
+        }
     }
 
     @Id

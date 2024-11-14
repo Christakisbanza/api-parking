@@ -14,19 +14,7 @@ public class UserMapper {
     }
 
     public static UserResponseDto toUserDto(User user){
-        ModelMapper mapper = new ModelMapper();
-
-        PropertyMap<User, UserResponseDto> props = new PropertyMap<User, UserResponseDto>() {
-            @Override
-            protected void configure() {
-                String role = user.getRole().name().substring("ROLE_".length());
-                map().setRole(role);
-            }
-        };
-
-        mapper.addMappings(props);
-
-        return mapper.map(user,UserResponseDto.class);
+        return new ModelMapper().map(user, UserResponseDto.class);
     }
 
 }
