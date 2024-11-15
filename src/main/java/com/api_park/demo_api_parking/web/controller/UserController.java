@@ -103,6 +103,11 @@ public class UserController {
                             responseCode = "400",
                             description = "Senha atual não válida",
                             content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Campos inválidos o mal formatadas",
+                            content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))
                     )
             }
 
