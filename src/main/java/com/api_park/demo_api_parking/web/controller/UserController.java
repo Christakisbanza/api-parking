@@ -62,12 +62,51 @@ public class UserController {
         return ResponseEntity.ok().body(UserMapper.toUserDto(users));
     }
 
+    @Operation(
+            summary = "Recuperar por Id",
+            description = "Recurso para procurar um novo usuário",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Recurso recuperado com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Recurso não encontrado ",
+                            content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))
+                    )
+            }
+
+    )
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> findById(@PathVariable Long id){
         User user = userService.findById(id);
         return ResponseEntity.ok().body(UserMapper.toUserDto(user));
     }
 
+    @Operation(
+            summary = "Atualizar senha",
+            description = "Atualizar senha",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "204",
+                            description = "Senha atualizada com secesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Recurso não encontrado",
+                            content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Senha atual não válida",
+                            content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))
+                    )
+            }
+
+    )
     @PatchMapping("/{id}")
     public ResponseEntity<Void> upDatePassWord(@PathVariable Long id, @Valid @RequestBody UserPassWordDto userPassWordDto){
         User updateUserPassword = userService.upDatePassWord(id, userPassWordDto.getCurrentPassWord(), userPassWordDto.getNewPassWord(), userPassWordDto.getConfirmNewPassWord());
