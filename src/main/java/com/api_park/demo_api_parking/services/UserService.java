@@ -61,4 +61,16 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
+    public User findByUserName(String name){
+        return userRepository.findByUserName(name).orElseThrow(
+                () -> new EntityNotFoundException(String.format("Usuário %s não encontrado", name))
+        );
+    }
+
+    @Transactional
+    public User.Role findRoleByUserName(String name){
+        return userRepository.findRoleByUserName(name);
+    }
+
 }
