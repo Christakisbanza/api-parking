@@ -15,7 +15,7 @@ public class UserLoginDto {
 
     @NotBlank
     @Email(message = "Formato do email inválido")
-    private String name;
+    private String userName;
 
     @NotBlank
     @Size(min = 6, max = 6)
