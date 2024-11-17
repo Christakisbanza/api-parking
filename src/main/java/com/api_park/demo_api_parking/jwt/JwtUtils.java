@@ -1,6 +1,5 @@
 package com.api_park.demo_api_parking.jwt;
 
-import com.sun.jdi.event.StepEvent;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -63,7 +62,7 @@ public class JwtUtils {
         return null;
     }
 
-    public static String getUserNameFromToken(StepEvent token){
+    public static String getUserNameFromToken(String token){
         return getClaimsFromToken(String.valueOf(token)).getSubject();
     }
 
