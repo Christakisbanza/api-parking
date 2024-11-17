@@ -6,6 +6,7 @@ import com.api_park.demo_api_parking.exception.UserNameUniqueViolationException;
 import com.api_park.demo_api_parking.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,9 +19,12 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Transactional
     public User save(User user){
         try {
+            user.setPassWord(passwordEncoder.encode(user.getPassWord()));
             return userRepository.save(user);
         }catch (DataIntegrityViolationException e ){
             throw new UserNameUniqueViolationException(String.format("UserName {%s} já cadastrado", user.getUserName()));
@@ -47,11 +51,11 @@ public class UserService {
 
         User user = findById(id);
 
-        if(!user.getPassWord().equals(currentPassWord)){
+        if(!passwordEncoder.matches(currentPassWord, user.getPassWord())){
             throw new RuntimeException("Senha Inválida");
         }
 
-        user.setPassWord(newPassWord);
+        user.setPassWord(passwordEncoder.encode(newPassWord));
         return user;
     }
 
