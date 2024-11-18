@@ -5,7 +5,7 @@ import lombok.*;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString
 public class UserResponseDto {
-    private String id;
+    private Long id;
     private String userName;
     private String role;
 }
