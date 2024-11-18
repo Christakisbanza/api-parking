@@ -29,7 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/users")
 public class UserController {
-    
+
     private final UserService userService;
 
     @Operation(
@@ -122,17 +122,11 @@ public class UserController {
             responses = {
                     @ApiResponse(
                             responseCode = "204",
-                            description = "Senha atualizada com secesso",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))
+                            description = "Senha atualizada com secesso"
                     ),
                     @ApiResponse(
                             responseCode = "403",
                             description = "Permissçao restrita ! ",
-                            content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Recurso não encontrado",
                             content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))
                     ),
                     @ApiResponse(
@@ -151,7 +145,7 @@ public class UserController {
     @PatchMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN, CLIENT') AND (#id == authentication.principal.id)")
     public ResponseEntity<Void> upDatePassWord(@PathVariable Long id, @Valid @RequestBody UserPassWordDto userPassWordDto){
-        User updateUserPassword = userService.upDatePassWord(id, userPassWordDto.getCurrentPassWord(), userPassWordDto.getNewPassWord(), userPassWordDto.getConfirmNewPassWord());
+        userService.upDatePassWord(id, userPassWordDto.getCurrentPassWord(), userPassWordDto.getNewPassWord(), userPassWordDto.getConfirmNewPassWord());
         return ResponseEntity.noContent().build();
     }
 
