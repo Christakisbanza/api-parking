@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,24 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toUserDto(newUser));
     }
 
+
+    @Operation(
+            summary = "Listar todos os usuários",
+            description = "Request requires a Bearer Token !",
+            security = @SecurityRequirement(name = "security"),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Lista dos usuários cadastrados",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Permissçao restrita ! ",
+                            content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))
+                    )
+            }
+    )
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserResponseDto>> findAll(){
@@ -66,12 +85,18 @@ public class UserController {
 
     @Operation(
             summary = "Recuperar por Id",
-            description = "Recurso para procurar um novo usuário",
+            description = "Request requires a Bearer Token !",
+            security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Recurso recuperado com sucesso",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Permissçao restrita ! ",
+                            content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))
                     ),
                     @ApiResponse(
                             responseCode = "404",
@@ -90,12 +115,18 @@ public class UserController {
 
     @Operation(
             summary = "Atualizar senha",
-            description = "Atualizar senha",
+            description = "Request requires a Bearer Token !",
+            security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(
                             responseCode = "204",
                             description = "Senha atualizada com secesso",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Permissçao restrita ! ",
+                            content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))
                     ),
                     @ApiResponse(
                             responseCode = "404",
