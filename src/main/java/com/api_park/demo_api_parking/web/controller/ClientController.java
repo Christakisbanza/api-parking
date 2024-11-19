@@ -7,7 +7,14 @@ import com.api_park.demo_api_parking.services.ClientServices;
 import com.api_park.demo_api_parking.services.UserService;
 import com.api_park.demo_api_parking.web.controller.dto.ClientCreateDto;
 import com.api_park.demo_api_parking.web.controller.dto.ClientResponseDto;
+import com.api_park.demo_api_parking.web.controller.dto.UserResponseDto;
 import com.api_park.demo_api_parking.web.controller.dto.mapper.ClientMapper;
+import com.api_park.demo_api_parking.web.controller.exception.ErrorMessage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +23,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Tag(name = "Clientes", description = "Contém todas as operações relativas aos recursos para cadastro, edição e leitura de um Cliente. ")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/clients")
@@ -26,6 +33,28 @@ public class ClientController {
 
     private final UserService userService;
 
+    @Operation(
+            summary = "Criar um novo Cliente",
+            description = "Recurso para criar um novo Cliente",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Recurso criado com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "409",
+                            description = "Cliente já cadastrado",
+                            content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Dados de entrada inválidos",
+                            content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))
+                    )
+            }
+
+    )
     @PostMapping
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<ClientResponseDto> create(@RequestBody @Valid ClientCreateDto clientCreateDto, @AuthenticationPrincipal JwtUserDetails userDetails){
@@ -40,5 +69,5 @@ public class ClientController {
         List<Client> listClient = clientServices.findAll();
         return ResponseEntity.ok().body(ClientMapper.toClientResponseDto(listClient));
     }
-    
+
 }

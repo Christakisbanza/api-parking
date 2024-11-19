@@ -19,9 +19,9 @@ public class ClientServices {
     private final ClientRepository clientRepository;
 
     @Transactional
-    public Client save(Client client){
+    public void save(Client client){
         try {
-            return clientRepository.save(client);
+            clientRepository.save(client);
         }catch (DataIntegrityViolationException e){
             throw new CpfUniqueViolationException(String.format("CPF: %s não já existe no sistema", client.getCpf()));
         }
