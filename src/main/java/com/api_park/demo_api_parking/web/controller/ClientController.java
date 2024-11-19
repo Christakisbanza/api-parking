@@ -70,4 +70,33 @@ public class ClientController {
         return ResponseEntity.ok().body(ClientMapper.toClientResponseDto(listClient));
     }
 
+
+    @Operation(
+            summary = "Localizar um Cliente",
+            description = "Recurso para localizar um Cliente",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Recurso localizado com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Cliente não encontrado",
+                            content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Recursos não permitidos ao perfil de Cliente",
+                            content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))
+                    )
+            }
+    )
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ClientResponseDto> findById(@PathVariable Long id){
+        Client client = clientServices.findById(id);
+        return ResponseEntity.ok().body(ClientMapper.toClientResponseDto(client));
+    }
+
 }

@@ -3,6 +3,7 @@ package com.api_park.demo_api_parking.services;
 
 import com.api_park.demo_api_parking.entity.Client;
 import com.api_park.demo_api_parking.exception.CpfUniqueViolationException;
+import com.api_park.demo_api_parking.exception.EntityNotFoundException;
 import com.api_park.demo_api_parking.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -30,5 +31,12 @@ public class ClientServices {
     @Transactional
     public List<Client> findAll(){
         return clientRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public Client findById(Long id){
+        return clientRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format("Client id: %s não encontrada", id))
+        );
     }
 }
