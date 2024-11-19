@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNullApi;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtUserDetailsServices userDetailsServices;
+
 
 
     @Override
@@ -44,6 +46,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
+
 
     private void toAuthentication(HttpServletRequest request, String userName) {
         UserDetails userDetails = userDetailsServices.loadUserByUsername(userName);

@@ -9,6 +9,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @Service
@@ -23,5 +25,10 @@ public class ClientServices {
         }catch (DataIntegrityViolationException e){
             throw new CpfUniqueViolationException(String.format("CPF: %s não já existe no sistema", client.getCpf()));
         }
+    }
+
+    @Transactional
+    public List<Client> findAll(){
+        return clientRepository.findAll();
     }
 }
