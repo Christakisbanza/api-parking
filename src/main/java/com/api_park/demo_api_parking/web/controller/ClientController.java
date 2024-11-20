@@ -3,12 +3,15 @@ package com.api_park.demo_api_parking.web.controller;
 
 import com.api_park.demo_api_parking.entity.Client;
 import com.api_park.demo_api_parking.jwt.JwtUserDetails;
+import com.api_park.demo_api_parking.repository.projection.ClientProjection;
 import com.api_park.demo_api_parking.services.ClientServices;
 import com.api_park.demo_api_parking.services.UserService;
 import com.api_park.demo_api_parking.web.controller.dto.ClientCreateDto;
 import com.api_park.demo_api_parking.web.controller.dto.ClientResponseDto;
+import com.api_park.demo_api_parking.web.controller.dto.PageableDto;
 import com.api_park.demo_api_parking.web.controller.dto.UserResponseDto;
 import com.api_park.demo_api_parking.web.controller.dto.mapper.ClientMapper;
+import com.api_park.demo_api_parking.web.controller.dto.mapper.PageableMapper;
 import com.api_park.demo_api_parking.web.controller.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,6 +20,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -55,8 +60,7 @@ public class ClientController {
             }
     )
     @PostMapping
-    @PreAuthorize
-            ("hasRole('CLIENT')")
+    @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<ClientResponseDto> create(@RequestBody @Valid ClientCreateDto clientCreateDto, @AuthenticationPrincipal JwtUserDetails userDetails){
         Client client = ClientMapper.toClient(clientCreateDto);
         client.setUser(userService.findById(userDetails.getId()));
@@ -66,9 +70,9 @@ public class ClientController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<ClientResponseDto>> findAll(){
-        List<Client> listClient = clientServices.findAll();
-        return ResponseEntity.ok().body(ClientMapper.toClientResponseDto(listClient));
+    public ResponseEntity<PageableDto> findAll(Pageable pageable){
+        Page<ClientProjection> clients = clientServices.findAll(pageable);
+        return ResponseEntity.ok(PageableMapper.toDto(clients));
     }
 
 
