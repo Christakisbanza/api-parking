@@ -9,7 +9,6 @@ import com.api_park.demo_api_parking.services.UserService;
 import com.api_park.demo_api_parking.web.controller.dto.ClientCreateDto;
 import com.api_park.demo_api_parking.web.controller.dto.ClientResponseDto;
 import com.api_park.demo_api_parking.web.controller.dto.PageableDto;
-import com.api_park.demo_api_parking.web.controller.dto.UserResponseDto;
 import com.api_park.demo_api_parking.web.controller.dto.mapper.ClientMapper;
 import com.api_park.demo_api_parking.web.controller.dto.mapper.PageableMapper;
 import com.api_park.demo_api_parking.web.controller.exception.ErrorMessage;
@@ -123,6 +122,14 @@ public class ClientController {
     public ResponseEntity<ClientResponseDto> findById(@PathVariable Long id){
         Client client = clientServices.findById(id);
         return ResponseEntity.ok().body(ClientMapper.toClientResponseDto(client));
+    }
+
+
+    @GetMapping("/details")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<ClientResponseDto> getDetails(@AuthenticationPrincipal JwtUserDetails userDetails){
+        Client client = clientServices.findUserId(userDetails.getId());
+        return ResponseEntity.ok(ClientMapper.toClientResponseDto(client));
     }
 
 }

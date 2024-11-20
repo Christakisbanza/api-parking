@@ -42,4 +42,9 @@ public class ClientServices {
                 () -> new EntityNotFoundException(String.format("Client id: %s não encontrada", id))
         );
     }
+
+    @Transactional(readOnly = true)
+    public Client findUserId(Long id){
+        return clientRepository.findByUserId(id);
+    }
 }
