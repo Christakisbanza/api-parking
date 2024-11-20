@@ -96,8 +96,8 @@ public class ClientController {
 
 
     @Operation(
-            summary = "Localizar um Cliente",
-            description = "Recurso para localizar um Cliente",
+            summary = "Localizar um Cliente pelo Id",
+            description = "Recurso para localizar um Cliente pelo Id",
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(
@@ -125,6 +125,23 @@ public class ClientController {
     }
 
 
+    @Operation(
+            summary = "Recuperar dados do  Cliente",
+            description = "Recurso para recuperar dados de um Cliente",
+            security = @SecurityRequirement(name = "security"),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Recurso recuperado com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClientResponseDto.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Recursos não permitidos ao perfil de Admin",
+                            content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))
+                    )
+            }
+    )
     @GetMapping("/details")
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<ClientResponseDto> getDetails(@AuthenticationPrincipal JwtUserDetails userDetails){

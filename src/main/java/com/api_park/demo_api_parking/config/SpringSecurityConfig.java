@@ -34,7 +34,7 @@ public class SpringSecurityConfig {
                     .requestMatchers(HttpMethod.POST,"api/v1/users").permitAll()
                     .requestMatchers(HttpMethod.POST,"api/v1/auth").permitAll()
                     .requestMatchers(
-                        antMatcher(HttpMethod.POST, "/api/v1/usuarios"),
+                        antMatcher(HttpMethod.POST, "/api/v1/users"),
                         antMatcher(HttpMethod.POST, "/api/v1/auth"),
                         antMatcher("/docs-park.html"),
                         antMatcher("/docs-park/**"),
