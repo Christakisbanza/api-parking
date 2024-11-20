@@ -1,5 +1,6 @@
 package com.api_park.demo_api_parking.web.controller.exception;
 
+import com.api_park.demo_api_parking.exception.CodeUniqueViolationException;
 import com.api_park.demo_api_parking.exception.CpfUniqueViolationException;
 import com.api_park.demo_api_parking.exception.EntityNotFoundException;
 import com.api_park.demo_api_parking.exception.UserNameUniqueViolationException;
@@ -41,7 +42,7 @@ public class ApiExceptionHandler {
 
     }
 
-    @ExceptionHandler({UserNameUniqueViolationException.class, CpfUniqueViolationException.class})
+    @ExceptionHandler({UserNameUniqueViolationException.class, CpfUniqueViolationException.class, CodeUniqueViolationException.class})
     public ResponseEntity<ErrorMessage> userNameUniqueException(RuntimeException ex, HttpServletRequest request){
 
         log.error("Api Error - ", ex);
