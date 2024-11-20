@@ -31,7 +31,7 @@ public class Vaga implements Serializable {
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private StatusVaga statusVaga;
+    private StatusVaga status;
 
     public enum StatusVaga{
         LIVRE, OCUPADA;
