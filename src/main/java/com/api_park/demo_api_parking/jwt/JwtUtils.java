@@ -40,7 +40,6 @@ public class JwtUtils {
         Date issuedAt = new Date();
         Date limit = toExpireDate(issuedAt);
         String token = Jwts.builder()
-                .setHeaderParam("typ", "JWT")
                 .setSubject(name)
                 .setIssuedAt(issuedAt)
                 .setExpiration(limit)

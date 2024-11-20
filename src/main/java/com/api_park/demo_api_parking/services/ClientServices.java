@@ -28,7 +28,7 @@ public class ClientServices {
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Client> findAll(){
         return clientRepository.findAll();
     }

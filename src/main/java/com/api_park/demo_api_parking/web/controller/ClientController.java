@@ -53,10 +53,10 @@ public class ClientController {
                             content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))
                     )
             }
-
     )
     @PostMapping
-    @PreAuthorize("hasRole('CLIENT')")
+    @PreAuthorize
+            ("hasRole('CLIENT')")
     public ResponseEntity<ClientResponseDto> create(@RequestBody @Valid ClientCreateDto clientCreateDto, @AuthenticationPrincipal JwtUserDetails userDetails){
         Client client = ClientMapper.toClient(clientCreateDto);
         client.setUser(userService.findById(userDetails.getId()));
@@ -65,6 +65,7 @@ public class ClientController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ClientResponseDto>> findAll(){
         List<Client> listClient = clientServices.findAll();
         return ResponseEntity.ok().body(ClientMapper.toClientResponseDto(listClient));
