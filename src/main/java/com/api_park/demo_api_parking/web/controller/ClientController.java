@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,11 +42,12 @@ public class ClientController {
     @Operation(
             summary = "Criar um novo Cliente",
             description = "Recurso para criar um novo Cliente",
+            security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(
                             responseCode = "201",
                             description = "Recurso criado com sucesso",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClientResponseDto.class))
                     ),
                     @ApiResponse(
                             responseCode = "409",
@@ -68,6 +70,24 @@ public class ClientController {
         return ResponseEntity.status(201).body(ClientMapper.toClientResponseDto(client));
     }
 
+
+    @Operation(
+            summary = "Recuperar lista de clientes",
+            description = "Recurso para listar todos os Cliente",
+            security = @SecurityRequirement(name = "security"),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Recurso recuperado com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClientResponseDto.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Acesso negado ao Cliente",
+                            content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))
+                    )
+            }
+    )
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PageableDto> findAll(Pageable pageable){
@@ -79,11 +99,12 @@ public class ClientController {
     @Operation(
             summary = "Localizar um Cliente",
             description = "Recurso para localizar um Cliente",
+            security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Recurso localizado com sucesso",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClientResponseDto.class))
                     ),
                     @ApiResponse(
                             responseCode = "404",
