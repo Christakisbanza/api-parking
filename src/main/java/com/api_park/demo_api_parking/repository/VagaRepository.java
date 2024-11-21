@@ -8,5 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface VagaRepository extends JpaRepository<Vaga, Long> {
+
     Optional<Vaga> findByCode(String code);
+
 }
