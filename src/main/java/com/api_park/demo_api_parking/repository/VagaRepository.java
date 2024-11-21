@@ -11,4 +11,6 @@ public interface VagaRepository extends JpaRepository<Vaga, Long> {
 
     Optional<Vaga> findByCode(String code);
 
+    Optional<Vaga> findFirstByStatus(Vaga.StatusVaga statusVaga);
+
 }
