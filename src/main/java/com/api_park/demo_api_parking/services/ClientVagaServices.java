@@ -2,6 +2,7 @@ package com.api_park.demo_api_parking.services;
 
 
 import com.api_park.demo_api_parking.entity.ClientVaga;
+import com.api_park.demo_api_parking.exception.EntityNotFoundException;
 import com.api_park.demo_api_parking.repository.ClientVagaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,12 @@ public class ClientVagaServices {
     @Transactional
     public ClientVaga save(ClientVaga clientVaga){
         return clientVagaRepository.save(clientVaga);
+    }
+
+    @Transactional
+    public ClientVaga findByRecibo(String recibo){
+        return clientVagaRepository.findByReciboAndDataSaidaIsNull(recibo).orElseThrow(
+                () -> new EntityNotFoundException(String.format("Recibo: %s não encontrado", recibo))
+        );
     }
 }
