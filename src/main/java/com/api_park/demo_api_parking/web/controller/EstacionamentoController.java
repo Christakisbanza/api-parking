@@ -80,4 +80,13 @@ public class EstacionamentoController {
         ClientVaga clientVaga = clientVagaServices.findByRecibo(recibo);
         return ResponseEntity.ok(ClientVagaMapper.toDto(clientVaga));
     }
+
+    @PostMapping("/check-out/{recibo}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<EstacionamentoResponseDto> checkOut(@PathVariable String recibo){
+        ClientVaga clientVaga = estacionamentoServices.checkOut(recibo);
+        return ResponseEntity.ok(ClientVagaMapper.toDto(clientVaga));
+    }
+
+
 }

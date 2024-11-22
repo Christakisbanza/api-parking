@@ -8,4 +8,7 @@ import java.util.Optional;
 public interface ClientVagaRepository extends JpaRepository<ClientVaga, Long> {
 
     Optional<ClientVaga> findByReciboAndDataSaidaIsNull(String recibo);
+
+    long countByClientCpfAndDataSaidaIsNotNull(String cpf);
+
 }
