@@ -2,6 +2,7 @@ package com.api_park.demo_api_parking.web.controller;
 
 
 import com.api_park.demo_api_parking.entity.ClientVaga;
+import com.api_park.demo_api_parking.jwt.JwtUserDetails;
 import com.api_park.demo_api_parking.repository.projection.ClienteVagaProjection;
 import com.api_park.demo_api_parking.services.ClientVagaServices;
 import com.api_park.demo_api_parking.services.EstacionamentoServices;
@@ -26,6 +27,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -101,6 +103,16 @@ public class EstacionamentoController {
                                                                         @PageableDefault(size = 5, sort = "dataEntrada", direction = Sort.Direction.ASC)Pageable pageable)
     {
         Page<ClienteVagaProjection> projections = clientVagaServices.findAllByCpf(cpf, pageable);
+        PageableDto dto = PageableMapper.toDto2(projections);
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping
+    @PreAuthorize("hasAnyRole('CLIENT')")
+    public ResponseEntity<PageableDto> findAllEstacionamentoById(@AuthenticationPrincipal JwtUserDetails user,
+                                                                               @PageableDefault(size = 5, sort = "dataEntrada", direction = Sort.Direction.ASC)Pageable pageable )
+    {
+        Page<ClienteVagaProjection> projections = clientVagaServices.findAllById(user.getId(), pageable);
         PageableDto dto = PageableMapper.toDto2(projections);
         return ResponseEntity.ok(dto);
     }

@@ -16,4 +16,5 @@ public interface ClientVagaRepository extends JpaRepository<ClientVaga, Long> {
 
     Page<ClienteVagaProjection> findAllByCpf(String cpf, Pageable pageable);
 
+    Page<ClienteVagaProjection> findAllByClientUserId(Long id, Pageable pageable);
 }
